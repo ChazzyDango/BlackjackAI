@@ -10,7 +10,7 @@ class Agent:
             self.known_deck.append(cards)
         self.hand = list()
 
-        # TODO delete this, its for debugging purposes
+        # This array is the cards known to be discarded, it exists for debugging purposes and data analysis
         self.known_discard = []
         # in case i want to make the agent forget cards ocassionally (From Settings.py)
         self.forget = forgetfullness

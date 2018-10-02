@@ -54,12 +54,12 @@ class Dealer:
         # the sum of all cards in the hand (simplifies code)
         hand_sum = 0
         # create an array of the values of cards in hand (simplifies code)
-        cardval = []
+        card_vals = []
         for i in range(0, len(self.hand)):
-            cardval.append(self.convert_handval(self.hand[i]))
-        hand_sum = sum(cardval)
+            card_vals.append(self.convert_handval(self.hand[i]))
+        hand_sum = sum(card_vals)
         # if one of the cards is an Ace, check if it should be an 11 or 1
-        if 1 in cardval:
+        if 1 in card_vals:
             if hand_sum <= 11:
                 hand_sum += 10
         # in classic blackjack a dealer hits on 17 or lower (even soft 17s)
@@ -69,11 +69,11 @@ class Dealer:
                 # dealer draws a card
                 self.hand.append(self.game_deck.pop())
                 # appends the newly drawn card's value to the cardval array
-                cardval.append(self.convert_handval(self.hand[-1]))
+                card_vals.append(self.convert_handval(self.hand[-1]))
                 # recalculates the hand sum
-                hand_sum = sum(cardval)
+                hand_sum = sum(card_vals)
                 # if one of the cards is an Ace, check if it should be an 11 or 1
-                if 1 in cardval:
+                if 1 in card_vals:
                     if hand_sum <= 11:
                         hand_sum += 10
             # now the dealer is done hitting and has their final value
