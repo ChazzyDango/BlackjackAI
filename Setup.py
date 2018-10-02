@@ -2,11 +2,16 @@ import random
 from Settings import *
 from Dealer import *
 
+game_mode = GameModes.CLASSIC
 suitsList = ['heart', 'diamond', 'spade', 'clubs']
 valuesList = ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 'Jack', 'Queen', 'King']
 
+
 def play_game(game_deck):
-    dealer = Dealer(game_deck)
+    # initialize the dealer, which also initializes the agent/player
+    dealer = Dealer(game_deck, game_mode)
+    dealer.deal()
+
 
 class Card:
     def __init__(self, value, colour):
