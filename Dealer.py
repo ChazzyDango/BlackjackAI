@@ -51,6 +51,7 @@ class Dealer:
         self.hand = []
 
     def dealer_turn(self):
+        # TODO add some outputs here so people know this part is working
         # the sum of all cards in the hand (simplifies code)
         hand_sum = 0
         # create an array of the values of cards in hand (simplifies code)
