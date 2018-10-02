@@ -5,6 +5,9 @@ import random
 class Agent:
 
     def __init__(self, deck):
+        #this is the actual deck (it is shared memory so the agent may draw cards
+        self.deck = deck
+
         self.known_deck = list()
         for cards in deck:
             self.known_deck.append(cards)
@@ -35,9 +38,14 @@ class Agent:
             if self.split():
                 # makes the second hand with the second card and removes it from the first hand
                 self.splithand.append(self.hand.pop(1))
+            #draws the extra cards for the two hands
+            self.draw_card(self.deck.pop(0))
+            card_vals.append(self.convert_handval(self.hand[1]))
+            self.split_draw(self.deck.pop(0))
+            card_vals.append(self.convert_handval(self.splithand[1]))
             # recalculates the hand sums
-            hand_sum[0] = card_vals[0]
-            hand_sum[1] = card_vals[1]
+            hand_sum[0] = card_vals[0] + card_vals[2]
+            hand_sum[1] = card_vals[1] + card_vals[3]
         # otherwise continue normally
         else:
             hand_sum[0] = sum(card_vals)
@@ -63,10 +71,14 @@ class Agent:
 
     def draw_card(self, card):
         self.hand.append(card)
-
         # TODO implement this forgetting code later, maybe after a round as the cards are discarded
         # rolls a number from 1 to 100, if its greater than the forget threshold don't remember it
         # if random.randint(1, 100) > self.forget:
+        self.known_discard.append(card)
+        self.known_deck.remove(card)
+
+    def split_draw(self, card):
+        self.splithand.append(card)
         self.known_discard.append(card)
         self.known_deck.remove(card)
 
