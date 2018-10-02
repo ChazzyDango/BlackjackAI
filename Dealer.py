@@ -52,6 +52,9 @@ class Dealer:
 
     def dealer_turn(self):
         # TODO add some outputs here so people know this part is working
+        # the dealer reveals their other facedown card to the agent
+        self.opponent.see_card(self.hand[0])
+        print("Dealer's Turn: \n")
         # the sum of all cards in the hand (simplifies code)
         hand_sum = 0
         # create an array of the values of cards in hand (simplifies code)
@@ -69,6 +72,8 @@ class Dealer:
             while hand_sum <= 17:
                 # dealer draws a card
                 self.hand.append(self.game_deck.pop())
+                # shows the card to the agent
+                self.opponent.see_card(self.hand[-1])
                 # appends the newly drawn card's value to the cardval array
                 card_vals.append(self.convert_handval(self.hand[-1]))
                 # recalculates the hand sum
