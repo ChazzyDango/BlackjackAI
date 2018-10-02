@@ -19,6 +19,7 @@ class Agent:
         # TODO calculate odds of winning based on hits, stands, doubles, etc.
         # TODO Put all calculation logic here
         print("Hewwo 2")
+        return 1
 
     def draw_card(self, card):
         self.hand.append(card)

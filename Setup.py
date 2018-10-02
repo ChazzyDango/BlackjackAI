@@ -11,6 +11,7 @@ def play_game(game_deck):
     # initialize the dealer, which also initializes the agent/player
     dealer = Dealer(game_deck, game_mode)
     dealer.deal()
+    dealer.play()
 
 
 class Card:

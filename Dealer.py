@@ -35,10 +35,10 @@ class Dealer:
 
     # a method for understanding the values on a card (eg: King = 10)
     def convert_handval(self, card):
-        #if the card is an ace we must have a special condition for it
+        # if the card is an ace we must have a special condition for it
+        # An ace is considered a one when returned, the calculation determines if it can be an 11
         if card.value == 'Ace':
-            # TODO figure out how to handle aces
-            print("uh oh")
+            return 1
         # if the card is a face card
         elif card.value == 'King' or card.value == 'Jack' or card.value == 'Queen':
             return 10
@@ -51,22 +51,51 @@ class Dealer:
         self.hand = []
 
     def dealer_turn(self):
+        # the sum of all cards in the hand (simplifies code)
         hand_sum = 0
+        # create an array of the values of cards in hand (simplifies code)
+        cardval = []
         for i in range(0, len(self.hand)):
-            hand_sum += self.convert_handval(self.hand[i])
-
+            cardval.append(self.convert_handval(self.hand[i]))
+        hand_sum = sum(cardval)
+        # if one of the cards is an Ace, check if it should be an 11 or 1
+        if 1 in cardval:
+            if hand_sum <= 11:
+                hand_sum += 10
         # in classic blackjack a dealer hits on 17 or lower (even soft 17s)
         if self.game_mode == GameModes.CLASSIC:
             # if the dealer should hit
             while hand_sum <= 17:
                 # dealer draws a card
                 self.hand.append(self.game_deck.pop())
-                # resets the hand sum value and recalculates it
-                hand_sum = 0
-                for i in range(0, len(self.hand)):
-                    hand_sum += self.convert_handval(self.hand[i])
+                # appends the newly drawn card's value to the cardval array
+                cardval.append(self.convert_handval(self.hand[-1]))
+                # recalculates the hand sum
+                hand_sum = sum(cardval)
+                # if one of the cards is an Ace, check if it should be an 11 or 1
+                if 1 in cardval:
+                    if hand_sum <= 11:
+                        hand_sum += 10
             # now the dealer is done hitting and has their final value
             if hand_sum > 21:
-                print("Dealer BUST")
+                print("Dealer BUST \n")
+                return 0
                 # TODO implement logic for when the dealer busts
+            else:
+                return hand_sum
 
+    def play(self):
+        # the player always goes before the dealer in case they bust
+        player_sum = self.opponent.agent_turn()
+        # if the player didn't bust
+        if player_sum > 0:
+            # the dealer does their moves
+            dealer_sum = self.dealer_turn()
+            if dealer_sum == player_sum:
+                print("Push \n")
+            elif dealer_sum > player_sum:
+                print("Dealer Wins! \n")
+            elif player_sum > dealer_sum:
+                print("Agent Wins! \n")
+        else:
+            print("Dealer Wins \n")
