@@ -12,12 +12,14 @@ def play_game(game_deck):
     dealer = Dealer(game_deck, game_mode)
     dealer.deal()
     dealer.play()
+    # TODO Reward Agent with win/loss (+1/-1)
 
 
 class Card:
-    def __init__(self, value, colour):
+    def __init__(self, value, colour, decknum):
         self.value = value
         self.colour = colour
+        self.decknum = decknum
 
 
 def shuffle(s_deck):
@@ -27,8 +29,10 @@ def shuffle(s_deck):
         random.shuffle(s_deck)
 
 
-# initializes the deck
-deck = [Card(value, suit) for value in valuesList for suit in suitsList]
+deck = []
+# initializes the deck(s) depending on the number of decks
+for i in range(1, NUM_DECKS+1):
+    deck += [Card(value, suit, i) for value in valuesList for suit in suitsList]
 
 # Shuffle the deck
 shuffle(deck)

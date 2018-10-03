@@ -7,7 +7,7 @@ forgetfullness = (0/100)
 wait = 0.5
 
 # the number of decks to shuffle together before the game starts
-num_decks = 1
+NUM_DECKS = 4
 
 class GameModes(Enum):
     """ Modes that the simulation can be in for game play.

@@ -18,9 +18,6 @@ class Dealer:
         self.opponent = Agent(self.game_deck)
 
         # if the game mode is classic (dealer hits up to 17 always
-        # TODO wait for the agent's actions
-        # TODO Finish hitting/standing with its own hand
-        # TODO Reward Agent with win/loss (+1/-1)
 
     # deals cards to the agent and dealer and remove them from deck
     def deal(self):
