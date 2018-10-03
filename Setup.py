@@ -4,7 +4,7 @@ from Dealer import *
 
 game_mode = GameModes.CLASSIC
 suitsList = ['heart', 'diamond', 'spade', 'clubs']
-valuesList = ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 'Jack', 'Queen', 'King']
+valuesList = ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King']
 
 
 def play_game(game_deck):
