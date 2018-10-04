@@ -28,6 +28,7 @@ class Dealer:
         self.hand.append(self.game_deck.pop())
         # reveals the one card from the dealers hand to the agent
         self.opponent.see_card(self.hand[1])
+        print("Dealer has a %s of %s" % (self.hand[1].value, self.hand[1].colour))
         self.opponent.draw_card(self.game_deck.pop())
 
     # a method for understanding the values on a card (eg: King = 10)
@@ -51,7 +52,10 @@ class Dealer:
         # TODO add some outputs here so people know this part is working
         # the dealer reveals their other facedown card to the agent
         self.opponent.see_card(self.hand[0])
-        print("Dealer's Turn: \n")
+        soft = False
+        print("\n Dealer's Turn:")
+        print("Dealers Has a %s of %s and a %s of %s" %
+              (self.hand[0].value, self.hand[0].colour, self.hand[1].value, self.hand[1].colour))
         # the sum of all cards in the hand (simplifies code)
         hand_sum = 0
         # create an array of the values of cards in hand (simplifies code)
@@ -60,25 +64,32 @@ class Dealer:
             card_vals.append(self.convert_handval(self.hand[i]))
         hand_sum = sum(card_vals)
         # if one of the cards is an Ace, check if it should be an 11 or 1
-        if 1 in card_vals:
-            if hand_sum <= 11:
-                hand_sum += 10
+        if 1 in card_vals and hand_sum <= 11:
+            soft = True
+            hand_sum += 10
+        print("Totalling %d" % hand_sum)
         # in classic blackjack a dealer hits on 17 or lower (even soft 17s)
         if self.game_mode == GameModes.CLASSIC:
             # if the dealer should hit
-            while hand_sum <= 17:
+            while (hand_sum < 17) or (hand_sum <= 17 and soft):
                 # dealer draws a card
-                self.hand.append(self.game_deck.pop())
+                NewCard = self.game_deck.pop()
+                self.hand.append(NewCard)
                 # shows the card to the agent
                 self.opponent.see_card(self.hand[-1])
+                print("Dealer drew a %s of %s" % (NewCard.value, NewCard.colour))
                 # appends the newly drawn card's value to the cardval array
-                card_vals.append(self.convert_handval(self.hand[-1]))
+                card_vals.append(self.convert_handval(NewCard))
                 # recalculates the hand sum
                 hand_sum = sum(card_vals)
                 # if one of the cards is an Ace, check if it should be an 11 or 1
-                if 1 in card_vals:
-                    if hand_sum <= 11:
-                        hand_sum += 10
+                if 1 in card_vals and hand_sum <= 11:
+                    hand_sum += 10
+                    soft = True
+                if hand_sum > 21 and soft:
+                    hand_sum -= 10
+                    soft = False
+                print("Dealer's new total is %d" % hand_sum)
             # now the dealer is done hitting and has their final value
             if hand_sum > 21:
                 print("Dealer BUST \n")
@@ -95,10 +106,14 @@ class Dealer:
             # the dealer does their moves
             dealer_sum = self.dealer_turn()
             if dealer_sum == player_sum:
-                print("Push \n")
+                print("Push, Dealer Wins! \n")
+                return 0
             elif dealer_sum > player_sum:
                 print("Dealer Wins! \n")
+                return 0
             elif player_sum > dealer_sum:
                 print("Agent Wins! \n")
+                return 1
         else:
             print("Dealer Wins \n")
+            return 0
