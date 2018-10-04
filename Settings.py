@@ -6,6 +6,9 @@ forgetfullness = (0/100)
 # how much time to wait between moves (helps keep track of whats going on)
 wait = 0.5
 
+SLOW_MODE = False
+SLEEP_TIME = 3
+
 # the number of decks to shuffle together before the game starts
 NUM_DECKS = 4
 NUM_GAMES = 25

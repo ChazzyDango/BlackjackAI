@@ -1,5 +1,6 @@
 from Settings import *
 import numpy
+import time
 from Agent import *
 
 
@@ -30,6 +31,8 @@ class Dealer:
         self.opponent.see_card(self.hand[1])
         print("Dealer has a %s of %s" % (self.hand[1].value, self.hand[1].colour))
         self.opponent.draw_card(self.game_deck.pop())
+        if SLOW_MODE:
+            time.sleep(SLEEP_TIME)
 
     # a method for understanding the values on a card (eg: King = 10)
     def convert_handval(self, card):
@@ -67,6 +70,8 @@ class Dealer:
             soft = True
             hand_sum += 10
         print("Totalling %d" % hand_sum)
+        if SLOW_MODE:
+            time.sleep(SLEEP_TIME)
         # in classic blackjack a dealer hits on 17 or lower (even soft 17s)
         if self.game_mode == GameModes.CLASSIC:
             # if the dealer should hit
@@ -81,6 +86,10 @@ class Dealer:
                 card_vals.append(self.convert_handval(NewCard))
                 # recalculates the hand sum
                 hand_sum = sum(card_vals)
+
+                # checks if the value should still be soft after recalculating
+                if 21 >= hand_sum > 11 and soft:
+                    soft = False
                 # if one of the cards is an Ace, check if it should be an 11 or 1
                 if 1 in card_vals and hand_sum <= 11:
                     hand_sum += 10
@@ -89,6 +98,8 @@ class Dealer:
                     hand_sum -= 10
                     soft = False
                 print("Dealer's new total is %d" % hand_sum)
+                if SLOW_MODE:
+                    time.sleep(SLEEP_TIME)
             # now the dealer is done hitting and has their final value
             if hand_sum > 21:
                 print("Dealer BUST \n")

@@ -1,6 +1,7 @@
 import random
 from Settings import *
 from Dealer import *
+import time
 
 game_mode = GameModes.CLASSIC
 suitsList = ['heart', 'diamond', 'spade', 'clubs']
@@ -11,9 +12,11 @@ def play_game(game_deck):
     # initialize the dealer, which also initializes the agent/player
     dealer = Dealer(game_deck, game_mode)
     AgentWins = 0
-    for x in range(0,NUM_GAMES):
+    for x in range(0, NUM_GAMES):
         dealer.deal()
         AgentWins += dealer.play()
+        if SLOW_MODE:
+            time.sleep(SLEEP_TIME)
 
     print("Agent Won %d Times" % AgentWins)
     # TODO Reward Agent with win/loss (+1/-1)

@@ -1,5 +1,6 @@
 from Settings import *
 import random
+import time
 
 
 class Agent:
@@ -22,7 +23,7 @@ class Agent:
         self.forget = forgetfullness
 
     def agent_turn(self):
-        print("Agent's Turn: \n")
+        print("\n Agent's Turn:")
         # the sum of all cards in the hand (simplifies code)
         # hand_sum[0] is the base hand, hand_sum[1] is only when the hands are split
         hand_sum = [0, 0]
@@ -120,6 +121,8 @@ class Agent:
                 print("Odds of Busting: %f" % (fail/CardsLeft))
                 print("Odds of gaining advantage: %f" % (adv / CardsLeft))
                 print("Odds of dealer winning with the hidden card if we stand now: %f" % (Dwin/CardsLeft))
+                if SLOW_MODE:
+                    time.sleep(SLEEP_TIME)
 
                 if soft[j] == True and hand_sum[j] >= 19 and Stand == False:
                     if Stand == False:
@@ -246,6 +249,8 @@ class Agent:
                     if Stand == False:
                         print("Stand")
                     Stand = True
+                if(SLOW_MODE):
+                    time.sleep(SLEEP_TIME)
         self.discard_hand()
         if hand_sum[0] > 21:
             hand_sum[0] = 0
