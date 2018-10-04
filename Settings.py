@@ -8,6 +8,7 @@ wait = 0.5
 
 # the number of decks to shuffle together before the game starts
 NUM_DECKS = 4
+NUM_GAMES = 25
 
 class GameModes(Enum):
     """ Modes that the simulation can be in for game play.

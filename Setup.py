@@ -10,8 +10,12 @@ valuesList = ['Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King']
 def play_game(game_deck):
     # initialize the dealer, which also initializes the agent/player
     dealer = Dealer(game_deck, game_mode)
-    dealer.deal()
-    dealer.play()
+    AgentWins = 0
+    for x in range(0,NUM_GAMES):
+        dealer.deal()
+        AgentWins += dealer.play()
+
+    print("Agent Won %d Times" % AgentWins)
     # TODO Reward Agent with win/loss (+1/-1)
 
 

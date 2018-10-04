@@ -46,10 +46,9 @@ class Dealer:
 
     # discards the hand at the end of the round
     def discard_hand(self):
-        self.hand = []
+        self.hand.clear()
 
     def dealer_turn(self):
-        # TODO add some outputs here so people know this part is working
         # the dealer reveals their other facedown card to the agent
         self.opponent.see_card(self.hand[0])
         soft = False
@@ -94,7 +93,6 @@ class Dealer:
             if hand_sum > 21:
                 print("Dealer BUST \n")
                 return 0
-                # TODO implement logic for when the dealer busts
             else:
                 return hand_sum
 
@@ -105,6 +103,8 @@ class Dealer:
         if player_sum > 0:
             # the dealer does their moves
             dealer_sum = self.dealer_turn()
+            # discard the dealer's hand for the next game
+            self.discard_hand()
             if dealer_sum == player_sum:
                 print("Push, Dealer Wins! \n")
                 return 0
@@ -115,5 +115,6 @@ class Dealer:
                 print("Agent Wins! \n")
                 return 1
         else:
+            self.discard_hand()
             print("Dealer Wins \n")
             return 0

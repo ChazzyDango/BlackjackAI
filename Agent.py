@@ -69,9 +69,6 @@ class Agent:
                     hand_sum[1] += 10
                     soft[1] = True
 
-        # TODO calculate odds of winning based on hits, stands, doubles, etc.
-        # TODO Put all calculation logic here
-        # TODO determine whether to hit, stand or double here (the actual work)
         DealerVal = self.convert_handval(self.SeenCard)
         if DealerVal == 1:
             DealerVal = 11
@@ -87,7 +84,6 @@ class Agent:
                 fail = 0
                 Dwin = 0
                 adv = 0
-                # TODO manage aces within the calculations
                 # a look to scan through all cards still left in the deck (that we know of)
                 for i in range(0, CardsLeft):
                     Cardi = self.convert_handval(self.known_deck[i])
@@ -142,7 +138,10 @@ class Agent:
                 if FailMinusAdv < 0:
                     FailMinusAdv = 0
 
-                if (FailMinusAdv) >= (Dwin/CardsLeft) and (fail/CardsLeft) > 0.45 or Stand == True:
+
+                #Number Things
+
+                if (FailMinusAdv) >= (Dwin/CardsLeft) and (fail/CardsLeft) > 0.40 or Stand == True:
                     if Stand == False:
                         print("Stand")
                     Stand = True
@@ -161,11 +160,49 @@ class Agent:
                     else:
                         print ("New Total Is %d" % hand_sum[j])
 
+
+
+
                 # the dealer has to have at least 17
                 # if your score is below 17 all
                 # you care about is if your odds of not busting are greater than them not busting
 
                 # if youre over 17 all you care about is the odds of the dealer beating you right now (Dwin)
+
+                if hand_sum[j] == 12 and (DealerVal == 2 or DealerVal == 3 or DealerVal >= 7) and soft[j] == False:
+                    print("Hit")
+                    NewCard = self.deck.pop()
+                    if j == 0:
+                        self.draw_card(NewCard)
+                    elif j == 1:
+                        self.split_draw(NewCard)
+                    hand_sum[j] += self.convert_handval(NewCard)
+                    if hand_sum[j] > 21:
+                        Stand = True
+                        print("Agent Bust!")
+                    else:
+                        print ("New Total Is %d" % hand_sum[j])
+                elif hand_sum[j] == 12 and 6 >= DealerVal >= 4:
+                    if Stand == False:
+                        print("Agent Stands")
+                    Stand = True
+                if 16 >= hand_sum[j] >= 13 and (DealerVal >= 7 or DealerVal == 1):
+                    print("Hit")
+                    NewCard = self.deck.pop()
+                    if j == 0:
+                        self.draw_card(NewCard)
+                    elif j == 1:
+                        self.split_draw(NewCard)
+                    hand_sum[j] += self.convert_handval(NewCard)
+                    if hand_sum[j] > 21:
+                        Stand = True
+                        print("Agent Bust!")
+                    else:
+                        print ("New Total Is %d" % hand_sum[j])
+                elif 16 >= hand_sum[j] >= 13 and (DealerVal <= 6):
+                    if Stand == False:
+                        print("Agent Stands")
+                    Stand = True
 
                 # if were at a hard 11 or below we always hit (its impossible to bust)
                 # also if the odds of busting are less than 10% we hit
@@ -209,8 +246,7 @@ class Agent:
                     if Stand == False:
                         print("Stand")
                     Stand = True
-
-        # TODO check known conditions
+        self.discard_hand()
         if hand_sum[0] > 21:
             hand_sum[0] = 0
         if hand_sum[1] > 21:
@@ -271,6 +307,10 @@ class Agent:
         self.known_deck.remove(card)
         self.known_discard.append(card)
         self.SeenCard = card
+
+    def discard_hand(self):
+        self.hand.clear()
+        self.splithand.clear()
 
     # a method for understanding the values on a card (eg: King = 10)
     def convert_handval(self, card):
