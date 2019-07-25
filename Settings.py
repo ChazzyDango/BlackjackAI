@@ -6,6 +6,7 @@ forgetfullness = (0/100)
 # how much time to wait between moves (helps keep track of whats going on)
 wait = 0.5
 
+AI_MODE = 1
 SLOW_MODE = False
 SLEEP_TIME = 3
 

@@ -1,6 +1,7 @@
 import random
 from Settings import *
 from Dealer import *
+from NeuralDealer import *
 import time
 
 game_mode = GameModes.CLASSIC
@@ -21,6 +22,9 @@ def play_game(game_deck):
     print("Agent Won %d Times" % AgentWins)
     # TODO Reward Agent with win/loss (+1/-1)
 
+def play_neural_game(game_deck):
+    dealer = NeuralDealer(game_deck)
+
 
 class Card:
     def __init__(self, value, colour, decknum):
@@ -40,7 +44,11 @@ deck = []
 # initializes the deck(s) depending on the number of decks
 for i in range(1, NUM_DECKS+1):
     deck += [Card(value, suit, i) for value in valuesList for suit in suitsList]
+    # Shuffle the deck
+    shuffle(deck)
 
-# Shuffle the deck
-shuffle(deck)
-play_game(deck)
+if AI_MODE == 1:
+    play_game(deck)
+
+if AI_MODE == 2:
+    play_neural_game(deck)
