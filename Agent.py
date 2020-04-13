@@ -157,7 +157,9 @@ class Agent:
                     elif j == 1:
                         self.split_draw(NewCard)
                     hand_sum[j] += self.convert_handval(NewCard)
-                    if hand_sum[j] > 21:
+                    if hand_sum[j] > 21 and soft[j] == True:
+                        soft[j] = False
+                    elif hand_sum[j] > 21 and soft[j] == False:
                         Stand = True
                         print("Agent Bust!")
                     else:
